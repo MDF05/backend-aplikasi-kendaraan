@@ -15,6 +15,7 @@ public class VehicleDto {
     private String registrationNumber;
     private String ownerName;
     private String address;
+    private String vehicleMerk;
     private int year;
     private int cylinderCapacity;
     private String fuelType;

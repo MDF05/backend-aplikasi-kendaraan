@@ -1,5 +1,8 @@
 package com.example.backend_aplikasi_kendaraan.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.example.backend_aplikasi_kendaraan.dto.VehicleDto;
@@ -22,6 +25,17 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicleSaved = vehicleRepository.save(vehicle);
 
         return VehicleMapper.mapToVehicleDto(vehicleSaved);
+    }
+
+    @Override
+    public List<VehicleDto> getVehicles() {
+        // Ambil semua entitas Vehicle dari repository
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+
+        // Konversi dari List<Vehicle> ke List<VehicleDto> menggunakan Stream API
+        return vehicles.stream()
+                .map(VehicleMapper::mapToVehicleDto) // Mapping menggunakan VehicleMapper
+                .collect(Collectors.toList());
     }
 
 }
