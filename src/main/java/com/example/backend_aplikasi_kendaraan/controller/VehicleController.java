@@ -31,4 +31,10 @@ public class VehicleController {
         VehicleDto vehicleSaved = vehicleService.createVehicle(vehicleDto);
         return new ResponseEntity<>(vehicleSaved, HttpStatus.CREATED);
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteVehicle(@PathVariable String id) {
+        vehicleService.DeleteVehicle(id);
+        return ResponseEntity.noContent().build();
+    }
 }

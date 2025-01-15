@@ -25,6 +25,8 @@ public class Vehicle {
     @Column(name = "owner_name")
     private String ownerName;
     private String address;
+    @Column(name = "vehicle_merk")
+    private String vehicleMerk;
     @Column(name = "year_realese")
     private int year;
     @Column(name = "cylinder_capacity")

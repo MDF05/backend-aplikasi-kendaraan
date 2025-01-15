@@ -8,4 +8,7 @@ public interface VehicleService {
     VehicleDto createVehicle(VehicleDto vehicleDto);
 
     List<VehicleDto> getVehicles();
+
+    VehicleDto DeleteVehicle(String registrationNumber);
+
 }

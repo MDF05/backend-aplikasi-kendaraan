@@ -17,25 +17,35 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class VehicleServiceImpl implements VehicleService {
 
-    private VehicleRepository vehicleRepository;
+    private final VehicleRepository vehicleRepository;
 
     @Override
     public VehicleDto createVehicle(VehicleDto vehicleDto) {
         Vehicle vehicle = VehicleMapper.mapToVehicle(vehicleDto);
         Vehicle vehicleSaved = vehicleRepository.save(vehicle);
-
         return VehicleMapper.mapToVehicleDto(vehicleSaved);
     }
 
     @Override
     public List<VehicleDto> getVehicles() {
-        // Ambil semua entitas Vehicle dari repository
         List<Vehicle> vehicles = vehicleRepository.findAll();
-
-        // Konversi dari List<Vehicle> ke List<VehicleDto> menggunakan Stream API
         return vehicles.stream()
-                .map(VehicleMapper::mapToVehicleDto) // Mapping menggunakan VehicleMapper
+                .map(VehicleMapper::mapToVehicleDto)
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public VehicleDto DeleteVehicle(String registrationNumber) {
+        if (registrationNumber == null || registrationNumber.isEmpty()) {
+            throw new IllegalArgumentException("Registration number cannot be null or empty.");
+        }
+
+        Vehicle vehicle = vehicleRepository.findByRegistrationNumber(registrationNumber)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Vehicle with registration number " + registrationNumber + " does not exist."));
+
+        vehicleRepository.delete(vehicle);
+
+        return VehicleMapper.mapToVehicleDto(vehicle);
+    }
 }
