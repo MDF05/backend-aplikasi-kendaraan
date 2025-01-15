@@ -11,4 +11,6 @@ public interface VehicleService {
 
     VehicleDto DeleteVehicle(String registrationNumber);
 
+    VehicleDto getVehicleById(String registrationNumber);
+
 }

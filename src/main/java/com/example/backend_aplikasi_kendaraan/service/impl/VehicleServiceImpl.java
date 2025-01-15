@@ -48,4 +48,19 @@ public class VehicleServiceImpl implements VehicleService {
 
         return VehicleMapper.mapToVehicleDto(vehicle);
     }
+
+    @Override
+    public VehicleDto getVehicleById(String registrationNumber) {
+        if (registrationNumber == null || registrationNumber.isEmpty()) {
+            throw new IllegalArgumentException("Registration number cannot be null or empty.");
+        }
+
+        Vehicle vehicle = vehicleRepository.findByRegistrationNumber(registrationNumber)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Vehicle with registration number " + registrationNumber + " does not exist."));
+
+        return VehicleMapper.mapToVehicleDto(vehicle);
+
+    }
+
 }
