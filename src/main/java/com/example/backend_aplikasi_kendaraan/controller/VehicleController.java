@@ -1,5 +1,6 @@
 package com.example.backend_aplikasi_kendaraan.controller;
 
+import java.time.Year;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -10,8 +11,6 @@ import com.example.backend_aplikasi_kendaraan.dto.VehicleDto;
 import com.example.backend_aplikasi_kendaraan.service.VehicleService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/vehicle")
@@ -30,6 +29,19 @@ public class VehicleController {
 
     @PostMapping
     public ResponseEntity<VehicleDto> postVehicle(@RequestBody VehicleDto vehicleDto) {
+        int year = Year.now().getValue();
+
+        System.out.println(year);
+
+        if (vehicleDto.getYear() > year)
+            throw new RuntimeException("Vehicle dto must under 2025");
+        if (vehicleDto.getYear() < 1000)
+            throw new RuntimeException("Vehicle dto must up to 1000 years");
+
+        VehicleDto existVehicle = vehicleService.getVehicleById(vehicleDto.getRegistrationNumber());
+        if (existVehicle != null)
+            throw new RuntimeException("Vehicle already exists");
+
         VehicleDto vehicleSaved = vehicleService.createVehicle(vehicleDto);
         return new ResponseEntity<>(vehicleSaved, HttpStatus.CREATED);
     }
